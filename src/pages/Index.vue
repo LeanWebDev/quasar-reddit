@@ -1,11 +1,42 @@
 <template>
-  <q-page class="row items-center justify-evenly">
-    <example-component
-      title="Example component"
-      active
-      :todos="todos"
-      :meta="meta"
-    ></example-component>
+  <q-page class="">
+  <q-spinner
+    v-if="loading"
+    color="primary"
+    size="3em"
+  />
+      <q-list bordered>
+      <q-item
+        clickable
+        v-ripple
+        v-for="post in posts"
+        :key="post.data.id"
+        @click="showImageDialog(post.data.url, post.data.title)"
+      >
+        <q-item-section avatar>
+          <q-avatar size="70px">
+            <img :src="post.data.url">
+          </q-avatar>
+        </q-item-section>
+        <q-item-section>{{ post.data.title }}</q-item-section>
+      </q-item>
+    </q-list>
+    <q-dialog full-width v-model="alert">
+      <q-card>
+        <q-card-section class="row items-center q-pb-none">
+          <div class="text-h6">{{ postTitle }}</div>
+          <q-space />
+          <q-btn icon="close" flat round dense v-close-popup />
+        </q-card-section>
+
+        <q-card-section>
+        {{ postUrl }}
+        </q-card-section>
+        <q-card-section>
+        <q-img :src="postUrl" />
+        </q-card-section>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
@@ -15,36 +46,38 @@ import Vue from 'vue';
 import ExampleComponent from 'components/CompositionComponent.vue';
 import { Todo, Meta } from 'components/models';
 
-export default Vue.extend({
+export default {
   name: 'PageIndex',
   components: { ExampleComponent },
+  created() {
+    this.$axios.get('https://www.reddit.com/r/awwww.json?raw_json=1')
+      .then(response => {
+        this.loading = false
+        console.log(response)
+        this.posts = response.data.data.children
+      })
+      .catch(error => {
+        this.loading = false
+        console.log(error);
+      })
+  },
   data() {
-    const todos: Todo[] = [
-      {
-        id: 1,
-        content: 'ct1'
-      },
-      {
-        id: 2,
-        content: 'ct2'
-      },
-      {
-        id: 3,
-        content: 'ct3'
-      },
-      {
-        id: 4,
-        content: 'ct4'
-      },
-      {
-        id: 5,
-        content: 'ct5'
-      }
-    ];
-    const meta: Meta = {
-      totalCount: 1200
-    };
-    return { todos, meta };
+    return {
+      posts: [],
+      loading: true,
+      alert: false,
+      address: '',
+      postUrl: '',
+      postTitle: ''
+    }
+  },
+  methods: {
+    showImageDialog(url, title) {
+      this.alert = true
+      this.postUrl = url
+      this.postTitle = title
+    }
   }
-});
+}
+
 </script>

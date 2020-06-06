@@ -1,8 +1,8 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
-      <q-toolbar>
-        <q-btn
+      <q-toolbar class="bg-orange-7">
+  <!---      <q-btn
           flat
           dense
           round
@@ -10,16 +10,16 @@
           aria-label="Menu"
           @click="leftDrawerOpen = !leftDrawerOpen"
         />
-
+-->
         <q-toolbar-title>
-          Quasar App
+          Awwww Subreddit
         </q-toolbar-title>
 
         <div>Quasar v{{ $q.version }}</div>
       </q-toolbar>
     </q-header>
 
-    <q-drawer
+   <!--- <q-drawer
       v-model="leftDrawerOpen"
       show-if-above
       bordered
@@ -30,7 +30,7 @@
           header
           class="text-grey-8"
         >
-          Essential Links
+          Subreddits
         </q-item-label>
         <EssentialLink
           v-for="link in essentialLinks"
@@ -39,7 +39,7 @@
         />
       </q-list>
     </q-drawer>
-
+-->
     <q-page-container>
       <router-view />
     </q-page-container>
@@ -61,10 +61,10 @@ export default {
       leftDrawerOpen: false,
       essentialLinks: [
         {
-          title: 'Docs',
-          caption: 'quasar.dev',
+          title: 'Awwww',
+          caption: 'reddit.com/r/awwww',
           icon: 'school',
-          link: 'https://quasar.dev'
+          link: 'awwww'
         },
         {
           title: 'Github',
